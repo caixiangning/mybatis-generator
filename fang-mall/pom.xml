@@ -11,7 +11,58 @@
     <name>fang-mall Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <mybatis-generator.version>1.3.6</mybatis-generator.version>
+    </properties>
 
+    <dependencies>
+        <!-- mybatis generator插件相关依赖 -->
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>${mybatis-generator.version}</version>
+        </dependency>
+    </dependencies>
 
+    <build>
+        <plugins>
 
+            <!-- refer:https://www.cnblogs.com/JsonShare/p/5521901.html -->
+            <!-- 使用mybatis-generator插件根据表自动生成pojo、dao、mapper文件-->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.2</version>
+                <dependencies>
+                    <!-- 指定mybatis generator使用的数据库驱动，如果不配置则需要在配置文件中引入 -->
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql-connector-java.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <!--指定mybatis generator配置文件的路径，默认使用resources根目录下的generatorConfig.xml文件-->
+                    <configurationFile>${basedir}/src/main/resources/mybatis-generator/generatorConfig.xml</configurationFile>
+                    <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
+
+            <!-- 使用maven编译插件指定工程使用jdk版本、编码格式以及其他信息-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArguments>
+                        <extdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</extdirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

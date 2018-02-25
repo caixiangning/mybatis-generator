@@ -1,0 +1,35 @@
+# ignore compiled class file
+*.class
+
+# ignore package file
+*.war
+*.ear
+*.zip
+*.rar
+*.tar.gz
+
+# ignore maven file
+target/
+
+# ignore eclipse
+.settings/
+.project
+.classpath
+
+# ignore idea
+.idea/
+/idea/
+*.ipr
+*.iml
+*.iws
+
+# ignore temp file
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# ignore system
+.DS_Store
+Thumbs.db
