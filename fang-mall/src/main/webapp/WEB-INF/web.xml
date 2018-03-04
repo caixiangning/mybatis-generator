@@ -1,7 +1,59 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1"
+         metadata-complete="true">
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <!-- 1、使用过滤器指定请求和响应使用UTF-8编码格式 -->
+  <!-- 查看CharacterEncodingFilter类源码可以看到初始化参数配置encoding配置为UTF-8，forceEncoding配置为true
+       相当于强制设置设置请求request和响应response使用UTF-8编码格式
+        request.setCharacterEncoding(encoding);
+        response.setCharacterEncoding(encoding);-->
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Spring MVC的配置在dispatcher-servlet.xml中配置，而Spring容器则在*-context.xml中配置 -->
+  <!-- Spring启动的容器是父容器，springmvc启动的容器是子容器。子容器能访问父容器的资源，父容器不能访问子容器的资源 -->
+  <!-- 使用监听器指定在web容器启动时加载Spring配置文件构建WebApplicationContext对象 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath*:spring/*-context.xml</param-value>
+  </context-param>
+
+  <!-- web容器启动后构建DispatcherServlet对象用于构建web相关对象 -->
+  <servlet>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:spring/dispatcher-servlet.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+  
 </web-app>
